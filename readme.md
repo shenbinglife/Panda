@@ -23,5 +23,6 @@ I think you should understand them.
 1. One thing is i put my `Application.kt` into package `io.github.shenbinglife.panda.web`, so that I had to config `scanBasePackages` On `@SpringBootApplication` exactly.
 2. Because i put `@JsonIgnore` on User.password getter method, my `UserControllerTest` has to use Gson to convert the user object to JSON string for the test, or Jackson util can not keep the password in JSON string.  
    Using postman to call create user URL, you can exactly save the User.password to database, which not return the password to response body.
+3. I set the context path `/panda`, so the example RESTful URL is `http://localhost:8080/panda/users`.
 
 If you have any question, please make an issue.
