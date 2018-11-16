@@ -19,8 +19,3 @@ class User : BaseEntity() {
 
 
 }
-
-fun main(args: Array<String>) {
-    val passwordField = User::class.java.getDeclaredMethod("getPassword")
-    passwordField.annotations.forEach { println(it) }
-}

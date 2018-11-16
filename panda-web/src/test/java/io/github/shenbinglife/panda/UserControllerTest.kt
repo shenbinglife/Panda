@@ -2,7 +2,6 @@ package io.github.shenbinglife.panda
 
 import io.github.shenbinglife.common.base.util.GsonUtil
 import io.github.shenbinglife.panda.entity.User
-import io.github.shenbinglife.panda.web.Application
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert
 import org.junit.Test
