@@ -6,32 +6,36 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+@Transactional
 open class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
-    protected val LOGGER: Logger = LoggerFactory.getLogger(this.javaClass)
+    protected val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
     protected lateinit var baseDao: Repository
 
-    fun getAll(): List<T> {
+    @Transactional(readOnly = true)
+    open fun getAll(): List<T> {
         return baseDao.findAll()
     }
 
-    fun create(t: T): T {
+    open fun create(t: T): T {
         t.createTime = Date()
         t.updateTime = Date()
         baseDao.saveAndFlush(t)
+        throw RuntimeException("xxx")
         return t
     }
 
-    fun update(t: T): T {
+    open fun update(t: T): T {
         t.updateTime = Date()
         baseDao.saveAndFlush(t)
         return t
     }
 
-    fun delete(id: Long) {
+    open fun delete(id: Long) {
         try {
             baseDao.deleteById(id)
         } catch (e: EmptyResultDataAccessException) {
@@ -39,7 +43,7 @@ open class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
         }
     }
 
-    fun delete(t: T) {
+    open fun delete(t: T) {
         baseDao.delete(t)
     }
 

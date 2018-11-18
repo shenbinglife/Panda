@@ -1,6 +1,7 @@
 package io.github.shenbinglife.panda.utils
 
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.MessageSourceAware
 import org.springframework.stereotype.Component
@@ -11,7 +12,9 @@ import org.springframework.web.context.request.ServletRequestAttributes
 class LocaleMessageBuilder : MessageSourceAware {
 
     var source: MessageSource? = null
-    val converter = ExceptionConverter()
+
+    @Autowired
+    lateinit var converter:ExceptionConverter
 
     fun build(e: Exception): String {
         assert(source != null) { "MessageSource has not been initialized" }
@@ -33,9 +36,11 @@ class LocaleMessageBuilder : MessageSourceAware {
     }
 }
 
+@Component
+//@ConditionalOnMissingBean(ExceptionConverter::class)
 class ExceptionConverter {
     companion object {
-        val LOGGER = LoggerFactory.getLogger(ExceptionConverter.javaClass)
+        val LOGGER = LoggerFactory.getLogger(ExceptionConverter::class.java)!!
     }
 
     var defaultCode = "default.message"

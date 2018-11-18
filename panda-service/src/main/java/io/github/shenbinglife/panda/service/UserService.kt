@@ -7,9 +7,11 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserService : BaseService<User, UserRepository>() {
+@Transactional
+open class UserService : BaseService<User, UserRepository>() {
 
 //    fun getByPage(page: Int, size: Int, name: String?): Page<User>? {
 //        val pageRequest = PageRequest.of(page, size, Sort.by("createTime").descending())

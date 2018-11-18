@@ -1,28 +1,17 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+<template lang="pug">
+  el-container
+    el-header
+      div(class='title') 熊猫管理平台
+    el-container
+      el-aside(width='200px')
+        el-menu(class="el-menu-vertical-demo") asdf asdf
+          el-submenu dasf
+      el-container
+        el-main Main
+        el-footer powered by shenbinglife@163.com
 </template>
 
-<script>
-  import Login from './components/Login'
-
-export default {
-  name: 'App',
-  comments: {
-    Login
-  }
-}
-</script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus" scoped>
+.title
+  font-size 22px
 </style>
