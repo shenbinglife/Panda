@@ -9,7 +9,7 @@
     <artifactId>panda</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>panda-web</artifactId>
+  <artifactId>panda-api</artifactId>
 
   <dependencies>
     <dependency>

@@ -1,20 +1,35 @@
-package io.github.shenbinglife.panda.service
+package io.github.shenbinglife.panda.utils
 
 import io.github.shenbinglife.panda.entity.BaseEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.lang.RuntimeException
 
 @Transactional
-open class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
+class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
     protected val LOGGER: Logger = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
     protected lateinit var baseDao: Repository
+
+    fun getByPage(page: Int, size: Int, name: String?): Page<T> {
+        val pageRequest = PageRequest.of(page - 1, size, Sort.by("updateTime").descending())
+        val userDao = baseDao as JpaSpecificationExecutor<T>
+        return userDao.findAll({ root, query, builder ->
+            if (name != null && name.isNotBlank()) {
+                query.where(builder.like(root.get("name"), "%$name%"))
+            }
+            query.restriction
+        }, pageRequest)
+    }
 
     @Transactional(readOnly = true)
     open fun getAll(): List<T> {
@@ -22,15 +37,11 @@ open class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
     }
 
     open fun create(t: T): T {
-        t.createTime = Date()
-        t.updateTime = Date()
         baseDao.saveAndFlush(t)
-        throw RuntimeException("xxx")
         return t
     }
 
     open fun update(t: T): T {
-        t.updateTime = Date()
         baseDao.saveAndFlush(t)
         return t
     }
@@ -51,5 +62,9 @@ open class BaseService<T : BaseEntity, Repository : JpaRepository<T, Long>> {
         for (id in ids) {
             this.delete(id)
         }
+    }
+
+    fun getById(id: Long): T? {
+        return baseDao.findById(id).orElse(null)
     }
 }

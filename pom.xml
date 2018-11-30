@@ -17,7 +17,7 @@
   </parent>
 
   <modules>
-    <module>panda-web</module>
+    <module>panda-api</module>
     <module>panda-dao</module>
     <module>panda-base</module>
     <module>panda-service</module>

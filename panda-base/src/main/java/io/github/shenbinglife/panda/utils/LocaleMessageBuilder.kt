@@ -7,6 +7,7 @@ import org.springframework.context.MessageSourceAware
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import javax.servlet.ServletRequest
 
 @Component
 class LocaleMessageBuilder : MessageSourceAware {
@@ -14,7 +15,7 @@ class LocaleMessageBuilder : MessageSourceAware {
     var source: MessageSource? = null
 
     @Autowired
-    lateinit var converter:ExceptionConverter
+    lateinit var converter: ExceptionConverter
 
     fun build(e: Exception): String {
         assert(source != null) { "MessageSource has not been initialized" }
@@ -24,11 +25,24 @@ class LocaleMessageBuilder : MessageSourceAware {
         return source!!.getMessage(code, null, locale)
     }
 
-    fun build(code: String): String {
+    fun build(localeCode: String): String {
         assert(source != null) { "MessageSource has not been initialized" }
         val servletRequestAttributes = RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes
         val locale = servletRequestAttributes.request.locale
-        return source!!.getMessage(code, null, locale)
+        return source!!.getMessage(localeCode, null, locale)
+    }
+
+    fun buildAsMessage(e: Exception): Message<Void> {
+        assert(source != null) { "MessageSource has not been initialized" }
+        val code = converter.convert(e.javaClass)
+        val servletRequestAttributes = RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes
+        val locale = servletRequestAttributes.request.locale
+        val msg = source!!.getMessage(code, null, locale)
+        return Message(msg, code)
+    }
+
+    fun getErrorCode(e: Exception): String {
+        return converter.convert(e.javaClass)
     }
 
     override fun setMessageSource(source: MessageSource) {
@@ -37,7 +51,6 @@ class LocaleMessageBuilder : MessageSourceAware {
 }
 
 @Component
-//@ConditionalOnMissingBean(ExceptionConverter::class)
 class ExceptionConverter {
     companion object {
         val LOGGER = LoggerFactory.getLogger(ExceptionConverter::class.java)!!
@@ -49,7 +62,7 @@ class ExceptionConverter {
     fun add(e: Class<Exception>, code: String) {
         val old = mappings.put(e, code)
         if (old != null && old != code) {
-            LOGGER.warn("replace the ${e.javaClass.name} error code mapping with [$code], old is [$old]")
+            LOGGER.warn("replace the ${e::class.qualifiedName} error code mapping with [$code], old is [$old]")
         }
     }
 

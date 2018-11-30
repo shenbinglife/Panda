@@ -8,13 +8,13 @@ module.exports = {
         proxy: {
             "/api": {
                 // 目标 API 地址
-                target: "http://172.20.9.33:38883",
+                target: "http://47.52.144.109:9000",
                 // 如果要代理 websockets
                 ws: true,
                 // 将主机标头的原点更改为目标URL
                 changeOrigin: true,
                 pathRewrite: {
-                    "^/api": "/"
+                    "^/api": "/panda"
                 }
             }
 

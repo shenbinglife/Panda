@@ -15,6 +15,7 @@ import javax.persistence.Table
 class Menu : BaseEntity() {
     var parentId: Long? = null
     var name: String? = null
+    var code: String? = null
     var description: String? = null
     var url: String? = null
     var sort: Int? = null

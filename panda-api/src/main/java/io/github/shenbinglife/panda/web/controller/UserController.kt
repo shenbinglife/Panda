@@ -5,6 +5,7 @@ import io.github.shenbinglife.panda.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
+import java.lang.RuntimeException
 import java.util.*
 
 @RestController
@@ -19,7 +20,7 @@ class UserController {
     @GetMapping
     fun getUsers(@RequestParam(defaultValue = "1") page: Int,
                  @RequestParam(defaultValue = "10") pageSize: Int,
-                 name: String?): Page<User>? {
+                 name: String?): Page<User> {
         return userService.getByPage(page, pageSize, name)
     }
 
