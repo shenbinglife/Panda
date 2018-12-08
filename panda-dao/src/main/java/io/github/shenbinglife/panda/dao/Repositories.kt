@@ -27,6 +27,8 @@ interface MenuRepository : JpaRepository<Menu, Long>, JpaSpecificationExecutor<M
     fun getChildrenByRole(@Param("id") id: Long, @Param("roleId") roleId: Long): List<Menu>
 
     fun getByParentIdOrderBySort(id: Long): List<Menu>
+
+    fun getByCode(code: String) : Menu?
 }
 
 @Repository

@@ -1,6 +1,5 @@
 package io.github.shenbinglife.panda
 
-import io.github.shenbinglife.common.base.util.GsonUtil
 import io.github.shenbinglife.panda.entity.User
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert

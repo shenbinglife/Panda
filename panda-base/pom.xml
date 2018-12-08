@@ -12,10 +12,6 @@
   <artifactId>panda-base</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>io.github.shenbinglife</groupId>
-      <artifactId>common-base</artifactId>
-      <version>1.0.0</version>
-    </dependency>
+
   </dependencies>
 </project>

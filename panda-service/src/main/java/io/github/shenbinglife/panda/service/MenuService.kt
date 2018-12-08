@@ -32,4 +32,8 @@ class MenuService : BaseService<Menu, MenuRepository>() {
         }
     }
 
+    fun getByCode(code: String):Menu? {
+        return baseDao.getByCode(code)
+    }
+
 }

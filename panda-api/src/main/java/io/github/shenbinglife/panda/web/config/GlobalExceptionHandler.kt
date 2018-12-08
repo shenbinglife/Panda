@@ -1,21 +1,20 @@
 package io.github.shenbinglife.panda.web.config
 
-import io.github.shenbinglife.common.base.exception.impl.InvalidParamsException
-import io.github.shenbinglife.common.base.exception.impl.PermissionForbiddenException
-import io.github.shenbinglife.common.base.exception.impl.UnauthenticatedException
+import io.github.shenbinglife.panda.exception.InvalidParamsException
+import io.github.shenbinglife.panda.exception.PermissionForbiddenException
+import io.github.shenbinglife.panda.exception.UnauthenticatedException
 import io.github.shenbinglife.panda.utils.LocaleMessageBuilder
 import io.github.shenbinglife.panda.utils.Message
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestControllerAdvice
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-@ControllerAdvice
+@RestControllerAdvice
 class GlobalExceptionHandler {
 
     companion object {
@@ -25,7 +24,6 @@ class GlobalExceptionHandler {
     @Autowired
     lateinit var builder: LocaleMessageBuilder
 
-    @ResponseBody
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidParamsException::class)
     fun handleInvalidParamsException(req: HttpServletRequest,
@@ -35,7 +33,6 @@ class GlobalExceptionHandler {
         return builder.buildAsMessage(e)
     }
 
-    @ResponseBody
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
     @ExceptionHandler(PermissionForbiddenException::class)
     fun handlePermissionException(req: HttpServletRequest,
@@ -45,17 +42,15 @@ class GlobalExceptionHandler {
         return builder.buildAsMessage(e)
     }
 
-    @ResponseBody
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthenticatedException::class)
     fun handleAuthException(req: HttpServletRequest,
                             res: HttpServletResponse,
                             e: UnauthenticatedException): Message<Void> {
-        LOGGER.error("HTTP Request Failed, auth failed, URL:${req.requestURL}, Method: ${req.method}", e)
+        LOGGER.error("HTTP Request Failed, unauthenticated, URL:${req.requestURL}, Method: ${req.method}", e)
         return builder.buildAsMessage(e)
     }
 
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     fun handleException(req: HttpServletRequest,
@@ -64,6 +59,5 @@ class GlobalExceptionHandler {
         LOGGER.error("HTTP Request Error, URL:${req.requestURL}, Method: ${req.method}", e)
         return builder.buildAsMessage(e)
     }
-
 }
 

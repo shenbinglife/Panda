@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import User from './components/User.vue'
+import Template from './components/Template.vue'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
       path:'/users',
       name:'user',
       component: User
+    },
+    {
+      path:'/templates',
+      name:'template',
+      component: Template
     },
     {
       path: '/about',
