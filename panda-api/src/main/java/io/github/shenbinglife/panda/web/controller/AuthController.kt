@@ -1,6 +1,5 @@
 package io.github.shenbinglife.panda.web.controller
 
-import io.github.shenbinglife.panda.service.AuthUser
 import io.github.shenbinglife.panda.service.UserService
 import io.github.shenbinglife.panda.utils.Message
 import io.github.shenbinglife.panda.utils.ResponseCode.LOGIN_SUCCESS
@@ -18,8 +17,10 @@ class AuthController {
     lateinit var userService: UserService
 
     @PostMapping
-    fun auth(@RequestBody user: AuthUser):Message<Void> {
-        userService.authUser(user)
+    fun auth(@RequestBody user: AuthUser): Message<Void> {
+        userService.authUser(user.account, user.password)
         return Message("user login success", LOGIN_SUCCESS)
     }
 }
+
+class AuthUser(var account: String, var password: String)

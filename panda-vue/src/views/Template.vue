@@ -34,15 +34,15 @@
     },
     methods: {
       getTables: function () {
-        this.axios.get("/api/database/tables")
+        this.$axios.get("/api/database/tables")
         .then(res => {
           this.tables = res.data
         })
       },
       onSubmit: function () {
-        this.axios.post("/api/template",this.form)
+        this.$axios.post("/api/template",this.form)
         .then(res => {
-          this.alertSuccess = true
+          this.$success();
         })
       }
     }

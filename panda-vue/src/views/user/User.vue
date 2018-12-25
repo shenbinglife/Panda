@@ -26,7 +26,7 @@
       el-pagination(class="pagination-panel" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
       :current-page="page" layout="total, sizes, prev, pager, next, jumper" :total="total"
       @current-change="changePage" @size-change="changeSize")
-    el-dialog(title="创建用户" :visible.sync="showAdd") this content
+
 
 </template>
 
@@ -40,8 +40,8 @@
         pageSize: 20,
         total: 0,
         keyword: "",
-        showAdd: true
-
+        showAdd: false,
+        form: {}
       }
     },
     mounted() {
@@ -60,14 +60,18 @@
         this.loadTable()
       },
       loadTable() {
-        this.axios.get("/api/users", {params: {page: this.page, pageSize: this.pageSize, name: this.keyword}})
+        this.$axios.get("/api/users", {params: {page: this.page, pageSize: this.pageSize, name: this.keyword}})
         .then(res => {
           this.tableData = res.data.content
           this.total=res.data.totalElements
         })
       },
       add() {
-
+        this.showAdd = true
+      },
+      cancel() {
+        this.showAdd = false
+        this.form = {}
       }
     }
   }

@@ -4,10 +4,18 @@ import io.github.shenbinglife.panda.entity.User
 import io.github.shenbinglife.panda.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.validation.Validator
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.lang.RuntimeException
 import java.util.*
+import javax.validation.constraints.Min
+import org.springframework.web.bind.WebDataBinder
+import org.springframework.web.bind.annotation.InitBinder
 
+
+
+@Validated
 @RestController
 @RequestMapping("/users")
 class UserController {
@@ -17,6 +25,7 @@ class UserController {
     /**
      * get users by page
      */
+    @Validated
     @GetMapping
     fun getUsers(@RequestParam(defaultValue = "1") page: Int,
                  @RequestParam(defaultValue = "10") pageSize: Int,

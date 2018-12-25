@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import javax.servlet.ServletRequest
+import javax.validation.ConstraintViolationException
 
 @Component
 class LocaleMessageBuilder : MessageSourceAware {
@@ -34,11 +35,15 @@ class LocaleMessageBuilder : MessageSourceAware {
 
     fun buildAsMessage(e: Exception): Message<Void> {
         assert(source != null) { "MessageSource has not been initialized" }
-        val code = converter.convert(e.javaClass)
-        val servletRequestAttributes = RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes
-        val locale = servletRequestAttributes.request.locale
-        val msg = source!!.getMessage(code, null, locale)
-        return Message(msg, code)
+        return if (e is ConstraintViolationException) {
+            Message(e.localizedMessage, e.message?: "xx")
+        } else {
+            val code = converter.convert(e.javaClass)
+            val servletRequestAttributes = RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes
+            val locale = servletRequestAttributes.request.locale
+            val msg = source!!.getMessage(code, null, locale)
+            Message(msg, code)
+        }
     }
 
     fun getErrorCode(e: Exception): String {

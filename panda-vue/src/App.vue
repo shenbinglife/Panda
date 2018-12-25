@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import Menu from "./components/Menu"
+  import Menu from "./views/Menu"
   export default {
     components: {Menu},
     data() {
@@ -29,7 +29,7 @@
     },
     methods: {
       loadMenus() {
-        this.axios.get('/api/menus/tree')
+        this.$axios.get('/api/menus/tree')
         .then(res => {
           this.leftMenus = res.data
         });
