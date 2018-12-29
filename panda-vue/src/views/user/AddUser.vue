@@ -1,5 +1,5 @@
 <template lang="pug">
-  el-dialog(title="创建用户" :visible.sync="showAdd" :close-on-click-modal="false" :show-close="false" width="400px")
+  el-dialog(title="创建用户" :visible.sync="show" :close-on-click-modal="false" :show-close="false" width="400px")
     el-form(:model="form" label-width="80px")
       el-form-item(label="帐号" size="small")
         el-input(v-model="form.account")
@@ -16,3 +16,27 @@
       el-button(type="primary" @click="doSubmit" size="small") 提交
       el-button(@click="cancel" size="small") 取消
 </template>
+<script>
+  export default {
+    data() {
+      return {
+        form: {
+          account: "",
+          name: "",
+          password: "",
+          mobilePhone: "",
+          email: ""
+        }
+      }
+    },
+    props: ['show'],
+    methods: {
+      doSubmit() {
+        this.$axios.post("");
+      },
+      cancel() {
+        this.$emit("update:show", false)
+      }
+    }
+  }
+</script>

@@ -27,7 +27,11 @@ class ObjectExistsValidator : ConstraintValidator<ObjectExistsValidation, Long> 
             val superType = superClass as ParameterizedType
             superType.actualTypeArguments[0] == this.annotation.entityType
         }
-        return if(serviceInstance == null) false else serviceInstance.getById(value) != null
+        if (serviceInstance == null) {
+            throw RuntimeException("No entity service instance for ${annotation.entityType}")
+        } else {
+            return serviceInstance.getById(value) != null
+        }
 
     }
 }

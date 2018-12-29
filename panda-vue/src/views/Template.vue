@@ -1,3 +1,4 @@
+<!-- 模版生成页面 -->
 <template lang="pug">
   div(style="padding-top:10px")
     el-form(ref="form" :model="form" label-width="120px" style="width:500px" @submit.native.prevent)

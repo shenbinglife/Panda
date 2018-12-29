@@ -26,7 +26,6 @@ class SpringConfiguration {
     fun getValidator(): Validator {
         val validator = LocalValidatorFactoryBean()
         validator.setValidationMessageSource(getMessageSource())
-        println(getMessageSource().getMessage("aaa", null, Locale.getDefault()))
         return validator
     }
 

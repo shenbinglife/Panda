@@ -26,12 +26,18 @@
       el-pagination(class="pagination-panel" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
       :current-page="page" layout="total, sizes, prev, pager, next, jumper" :total="total"
       @current-change="changePage" @size-change="changeSize")
+    add-user-model(:show.sync="showAdd" )
+    modify-user-model(:show.sync="showModify")
 
 
 </template>
 
 <script>
+  import addUserModel from './AddUser'
+  import modifyUserModel from './ModifyUser'
+
   export default {
+    components: {addUserModel, modifyUserModel},
     name: 'User',
     data() {
       return {
@@ -41,14 +47,14 @@
         total: 0,
         keyword: "",
         showAdd: false,
-        form: {}
+        showModify: false,
       }
     },
     mounted() {
       this.loadTable()
     },
     methods: {
-      clickRow(row){
+      clickRow(row) {
         this.$refs.multipleTable.toggleRowSelection(row)
       },
       changeSize(size) {
@@ -60,18 +66,21 @@
         this.loadTable()
       },
       loadTable() {
-        this.$axios.get("/api/users", {params: {page: this.page, pageSize: this.pageSize, name: this.keyword}})
+        this.$axios.get("/api/users",
+            {params: {page: this.page, pageSize: this.pageSize, name: this.keyword}})
         .then(res => {
           this.tableData = res.data.content
-          this.total=res.data.totalElements
+          this.total = res.data.totalElements
         })
       },
       add() {
         this.showAdd = true
       },
-      cancel() {
-        this.showAdd = false
-        this.form = {}
+      modify() {
+        this.showModify = true
+      },
+      delete() {
+
       }
     }
   }
@@ -82,8 +91,9 @@
     padding 0px 20px 0px 20px
     height 100%
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content space-between
+
   .search-panel
     height: 50px !important
 
