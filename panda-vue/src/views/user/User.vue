@@ -26,7 +26,7 @@
       el-pagination(class="pagination-panel" :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
       :current-page="page" layout="total, sizes, prev, pager, next, jumper" :total="total"
       @current-change="changePage" @size-change="changeSize")
-    add-user-model(:show.sync="showAdd" )
+    add-user-model(:show.sync="showAdd" @loadPage="loadTable")
     modify-user-model(:show.sync="showModify")
 
 

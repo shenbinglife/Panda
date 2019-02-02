@@ -32,7 +32,12 @@
     props: ['show'],
     methods: {
       doSubmit() {
-        this.$axios.post("");
+        this.$axios.post("/api/users", this.form)
+        .then(res => {
+          this.$success();
+          this.show = "false"
+          this.$emit('loadPage')
+        });
       },
       cancel() {
         this.$emit("update:show", false)

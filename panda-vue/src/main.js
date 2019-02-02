@@ -9,6 +9,7 @@ import './assets/css.styl'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$success = function() {
   this.$message({
@@ -27,6 +28,14 @@ Vue.prototype.$failed = function () {
   });
 }
 
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  return response;
+}, function (error) {
+  // 对响应错误做点什么
+  Vue.prototype.$failed()
+  return Promise.reject(error);
+});
 new Vue({
   router,
   store,
